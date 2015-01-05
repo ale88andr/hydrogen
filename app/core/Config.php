@@ -20,10 +20,8 @@
                 self::init();
             }
             if($path){
-                var_dump(self::$config);
                 $config = self::$config;
                 $path = explode(':', $path);
-                var_dump($path);
 
                 foreach ($path as $bit) {
                     if(isset($config[$bit])){
