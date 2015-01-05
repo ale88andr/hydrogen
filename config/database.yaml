@@ -1,0 +1,15 @@
+development:
+    driver:     mysql
+    host:       localhost
+    port:       27001
+    database:   my_project
+    username:   root
+    password:   Pa$$w0rd
+
+production:
+    driver:     mysql
+    host:       localhost
+    port:       27001
+    database:   my_project
+    username:   root
+    password:   Pa$$w0rd

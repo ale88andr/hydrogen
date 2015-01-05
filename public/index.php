@@ -4,3 +4,5 @@
     require_once ROOT_APP .'init' . EXT;
 
     $app = new App;
+
+    echo Config::get('db:driver');
