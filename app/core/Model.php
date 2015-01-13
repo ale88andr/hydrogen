@@ -53,11 +53,6 @@ class Model
     }
 
     private function set_fields($fields){
-        if(count($fields) > 0) {
-            $fields = implode(',', $fields);
-        } else {
-            $fields = '*';
-        }
-        return $fields;
+        return count($fields) > 0 ? implode(',', $fields) : '*';
     }
 }
