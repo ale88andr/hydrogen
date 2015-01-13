@@ -2,8 +2,8 @@ development:
     driver:     mysql
     host:       localhost
     port:       27001
-    database:   my_project
-    username:   root
+    database:   db_auth
+    user:       root
     password:   Pa$$w0rd
 
 production:
@@ -11,5 +11,5 @@ production:
     host:       localhost
     port:       27001
     database:   my_project
-    username:   root
+    user:       root
     password:   Pa$$w0rd
