@@ -2,26 +2,27 @@
 
 class Model
 {
-    public $db = null;
-    protected $table;
+    public $db = null; // current connection
+    protected $table; // current table
 
     function __construct(){
         $this->db = Database::connect();
         $this->table = mb_strtolower(get_class($this)) . 's';
     }
 
+    // wrapper for Database::query(), return: Database::results()
     private function send_query($sql, $values = []){
         $this->db->query($sql, $values);
         return $this->db->results();
     }
 
-    // $user->all(['login', 'created_at']);
+    // return: (array)all records from $this->table. Example: $user->all(['login', 'created_at']);
     public function all($select = false){
         $sql = 'SELECT ' . $this->set_fields($select) . ' FROM ' . $this->table;
         return $this->send_query($sql);
     }
 
-    // $users->find(['login' => $login, 'name' => 'user1'], ['login', 'created_at']);
+    // return (array|obj)record(s) from $this->table with WHERE constraint. Example: $users->find(['login' => $login, 'name' => 'user1'], ['login', 'created_at']);
     public function find($constraint, $select = false){
         if(is_array($constraint)){
             $columns = array_keys($constraint);
@@ -42,7 +43,7 @@ class Model
         }
     }
 
-    // $users->find_by_id(1);
+    // return: (obj)record from $this->table by id. Example: $users->find_by_id(1, ['login', 'created_at']);
     public function find_by_id($id, $select = false) {
         if(is_integer($id)){
             $sql = 'SELECT ' . $this->set_fields($select) . ' FROM ' . $this->table . ' WHERE id = ?';
@@ -52,6 +53,7 @@ class Model
         }
     }
 
+    // return: (str)part of query with list of columns or '*'(all)
     private function set_fields($fields){
         return count($fields) > 0 ? implode(',', $fields) : '*';
     }
