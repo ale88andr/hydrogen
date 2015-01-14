@@ -62,12 +62,22 @@
                         $x++;
                     }
                 }
-
-                if($this->_query->execute()){
+                // TODO Remove!
+                // if($this->_query->execute()){
+                //     $this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
+                //     $this->_count = $this->_query->rowCount();
+                // } else {
+                //     $this->_error = true;
+                // }
+                try {  
+                    $this->_query->execute();
                     $this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
                     $this->_count = $this->_query->rowCount();
-                } else {
+                }  
+                catch(PDOException $e) {  
+                    echo "We have a problem with this request...";
                     $this->_error = true;
+                    DEVELOPMENT_ENV ? print_r($e->getMessage()) : file_put_contents('error.log', $e->getMessage(), FILE_APPEND);  
                 }
             }
             return $this;
