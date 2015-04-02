@@ -2,15 +2,33 @@
 
 class Model
 {
-    public $db = null; // current connection
-    protected $table; // current table
+    /**
+     * Database connection (Singletone)
+     *
+     * @var Database::connect()
+     */
+    public $db = null;
+
+    /**
+     * Current table
+     *
+     * @var Model class name
+     */
+    protected $table;
 
     function __construct(){
         $this->db = Database::connect();
         $this->table = mb_strtolower(get_class($this)) . 's';
     }
 
-    // wrapper for Database::query(), return: Database::results()
+    /**
+     * A wrapper for Database::query().
+     *
+     * @param string $sql       The (PDO)SQL instructions
+     * @param array $values     Values for PDO statement
+     * @param boolean $write    Type of query (READ or WRITE)
+     * @return mixed OR int
+     */
     private function send_query($sql, $values = [], $write = false) {
         $this->db->query($sql, $values, $write);
         if($write){
@@ -20,13 +38,26 @@ class Model
         }
     }
 
-    // return: (array)all records from $this->table. Example: $user->all(['login', 'created_at']);
+    /**
+     * Method gets all records from table.
+     * Example: $user->all(['login', 'created_at']);
+     *
+     * @param array $select  Columns for select(default:false[all table columns])
+     * @return mixed
+     */
     public function all($select = false){
         $sql = 'SELECT ' . $this->set_fields($select) . ' FROM ' . $this->table;
         return $this->send_query($sql);
     }
 
-    // return (array|obj)record(s) from $this->table with WHERE constraint. Example: $users->find(['login' => $login, 'name' => 'user1'], ['login', 'created_at']);
+    /**
+     * Find record(s) by constraint.
+     * Example: $users->find(['login' => $login, 'name' => 'user1'], ['login', 'created_at']);
+     *
+     * @param string $constraint    SQL Where constraint
+     * @param array $select         Columns for select(default:false[all table columns])
+     * @return mixed
+     */
     public function find($constraint, $select = false){
         if(is_array($constraint)){
             $columns = array_keys($constraint);
@@ -47,7 +78,14 @@ class Model
         }
     }
 
-    // return: (obj)record from $this->table by id. Example: $users->find_by_id(1, ['login', 'created_at']);
+    /**
+     * Find record(s) by id.
+     * Example: $users->find_by_id(1, ['login', 'created_at']);
+     *
+     * @param string $id        id constraint
+     * @param array $select     Columns for select(default:false[all table columns])
+     * @return mixed
+     */
     public function find_by_id($id, $select = false) {
         if(is_integer($id)){
             $sql = 'SELECT ' . $this->set_fields($select) . ' FROM ' . $this->table . ' WHERE id = ?';
@@ -57,20 +95,31 @@ class Model
         }
     }
 
-    // return: (str)part of query with list of columns or '*'(all)
+    /**
+     * Return part of query with list of columns or '*'(all)
+     *
+     * @param array $select     Columns for select
+     * @return string
+     */
     private function set_fields($fields){
         return count($fields) > 0 ? implode(',', $fields) : '*';
     }
 
-    // return: (int)inserted rows, example $user->insert(['login' => $login])
+    /**
+     * Insert row.
+     * Example: $user->insert(['login' => $login])
+     *
+     * @param array $hash_values  Inserted values [column => value, ...]
+     * @return int
+     */
     public function insert($hash_values){
         if(count($hash_values)){
             $columns = array_keys($hash_values);
             $values = '';
+            
             $i = 1;
-
-            foreach ($hash_values as $value) {
-                $values .= '?';
+            foreach ($hash_values as $key => $value) {
+                $values .= ":{$key}";
                 if($i < count($hash_values)){
                     $values .= ', ';
                 }
@@ -84,15 +133,22 @@ class Model
         }
     }
 
-    // return: (int)updated rows, example $user->update($id, ['login' => $login])
+    /**
+     * Update row(s).
+     * Example: $user->update($id, ['login' => $login])
+     *
+     * @param string $constraint  SQL Where constraint
+     * @param array $hash_values  Inserted values [column => value, ...]
+     * @return int
+     */
     public function update($constraint, $hash_values){
         if(count($hash_values)){
             $where = array_keys($constraint);
             $values = '';
+            
             $i = 1;
-
             foreach ($hash_values as $key => $value) {
-                $values .= $key . '= ?';
+                $values .= "{$key} = :{$key}";
                 if($i < count($hash_values)){
                     $values .= ', ';
                 }
@@ -102,9 +158,9 @@ class Model
             $sql = "UPDATE {$this->table} SET {$values} WHERE ";
             foreach ($where as $index => $column) {
                 if($index > 0){
-                    $sql .= ' AND ' . $column . ' = ?';
+                    $sql .= " AND {$column} = :{$column}";
                 } else {
-                    $sql .= $column . ' = ?';
+                    $sql .= "{$column} = :{$column}";
                 }
             }
             print_r($sql);

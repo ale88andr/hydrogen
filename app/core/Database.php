@@ -56,10 +56,8 @@
             $this->_error = false;
             if($this->_query = $this->dbh->prepare($sql)){
                 if(count($params)){
-                    $x = 1;
-                    foreach ($params as $param){
-                        $this->_query->bindValue($x, $param);
-                        $x++;
+                    foreach ($params as $param => $param_value){
+                        $this->_query->bindValue(is_string($param) ? ":{$param}" : ++$param, $param_value);
                     }
                 }
                 // TODO Remove!
