@@ -2,6 +2,11 @@
 
     class Database
     {
+        /**
+         * Instance of db connection (Singletone)
+         *
+         * @var obj
+         */
         private static $_instance = null;
         private $dbh;
         private $_query,
@@ -28,6 +33,11 @@
             }
         }
 
+        /**
+         * Generate a PDO database dsn string.
+         *
+         * @return string
+         */
         private function getDsn(){
             switch (Config::get('db:driver')){
                 case 'mysql':
@@ -45,6 +55,12 @@
             return $dsn;
         }
 
+        /**
+         * Create instance of Database(Singltone).
+         *
+         * @return obj
+         * @api
+         */
         public static function connect(){
             if(!isset(self::$_instance)){
                 self::$_instance = new Database();
@@ -52,23 +68,23 @@
             return self::$_instance;
         }
 
+        /**
+         * A main PDO wrapper method to sending queries.
+         *
+         * @param string $sql       The (PDO)SQL instructions
+         * @param array $params     Values for PDO statement
+         * @param boolean $write    Type of query (READ or WRITE)
+         * @return obj
+         * @api
+         */
         public function query($sql, $params = [], $write = false){
             $this->_error = false;
             if($this->_query = $this->dbh->prepare($sql)){
                 if(count($params)){
-                    $x = 1;
-                    foreach ($params as $param){
-                        $this->_query->bindValue($x, $param);
-                        $x++;
+                    foreach ($params as $param => $param_value){
+                        $this->_query->bindValue(is_string($param) ? ":{$param}" : ++$param, $param_value);
                     }
                 }
-                // TODO Remove!
-                // if($this->_query->execute()){
-                //     $this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
-                //     $this->_count = $this->_query->rowCount();
-                // } else {
-                //     $this->_error = true;
-                // }
                 try {  
                     $this->_query->execute();
                     if(!$write){
@@ -85,6 +101,12 @@
             return $this;
         }
 
+        /**
+         * Access to query results.
+         *
+         * @return obj
+         * @api
+         */
         public function results(){
             switch (count($this->_results)) {
                 case '0':
@@ -102,10 +124,22 @@
             return $this->_results;
         }
 
+        /**
+         * Access to query errors.
+         *
+         * @return bool
+         * @api
+         */
         public function error(){
             return $this->_error;
         }
 
+        /**
+         * Access to query results count.
+         *
+         * @return int
+         * @api
+         */
         public function row_count(){
             return $this->_count;
         }
