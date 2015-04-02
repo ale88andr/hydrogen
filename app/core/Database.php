@@ -52,7 +52,7 @@
             return self::$_instance;
         }
 
-        public function query($sql, $params = []){
+        public function query($sql, $params = [], $write = false){
             $this->_error = false;
             if($this->_query = $this->dbh->prepare($sql)){
                 if(count($params)){
@@ -71,7 +71,9 @@
                 // }
                 try {  
                     $this->_query->execute();
-                    $this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
+                    if(!$write){
+                        $this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
+                    }
                     $this->_count = $this->_query->rowCount();
                 }  
                 catch(PDOException $e) {  

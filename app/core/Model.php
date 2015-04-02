@@ -11,9 +11,13 @@ class Model
     }
 
     // wrapper for Database::query(), return: Database::results()
-    private function send_query($sql, $values = []){
-        $this->db->query($sql, $values);
-        return $this->db->results();
+    private function send_query($sql, $values = [], $write = false) {
+        $this->db->query($sql, $values, $write);
+        if($write){
+            return $this->db->row_count();
+        } else {
+            return $this->db->results();
+        }
     }
 
     // return: (array)all records from $this->table. Example: $user->all(['login', 'created_at']);
@@ -56,5 +60,28 @@ class Model
     // return: (str)part of query with list of columns or '*'(all)
     private function set_fields($fields){
         return count($fields) > 0 ? implode(',', $fields) : '*';
+    }
+
+    // return: (bool)result of query, example $user->insert(['login' => $login])
+    public function insert($hash_values){
+        if(count($hash_values)){
+            $columns = array_keys($hash_values);
+            $values = '';
+            $i = 1;
+
+            foreach ($hash_values as $value) {
+                $values .= '?';
+                if($i < count($hash_values)){
+                    $values .= ', ';
+                }
+                $i++;
+            }
+
+            $sql = "INSERT INTO {$this->table} (" . implode(', ', $columns) . ") VALUES ({$values})";
+            print_r($sql);
+            return $this->send_query($sql, $hash_values, true);
+        } else {
+            $this->_error = 'Call error: insert parameters must be array!';
+        }
     }
 }
