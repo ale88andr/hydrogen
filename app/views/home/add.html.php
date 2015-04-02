@@ -5,7 +5,9 @@
         $validates_result = $check->validates($_POST, [
             'username' => [ 'presence' => true,
                             // 'length' => ['minimum' => 3, 'maximum' => 50], // ['in' => '3..50', 'is' => 6]
-                            'length' => ['in' => '6..50'],
+                            // 'length' => ['in' => '6..50'],
+                            // 'length' => ['minimum' => 6, 'maximum' => 10],
+                            // 'length' => ['is' => 7],
                             'inclusion' =>  ['www', 'us', 'ca', 'jp'],
                             'format' => '/REGEXP/',
                             'uniqueness' => true
@@ -15,6 +17,7 @@
                             'confirmation' => true,
                             'numericality' => true
                             ],
+            'email' => ['format' => '/\A([^@\s]+)@((?:[-a-z0-9]+\.)`[a-z]{2,})\z/i'],
             ]);
         if($validates_result->isValid()){
             echo "valid";
@@ -32,7 +35,7 @@
 
     <div class="field">
         <label for="email">Email</label>
-        <input type="email" name="email" class="email" id="email" value="<?= Input::find('email'); ?>" autocomplete="off">
+        <input type="text" name="email" class="email" id="email" value="<?= Input::find('email'); ?>" autocomplete="off">
     </div>
 
     <div class="field">

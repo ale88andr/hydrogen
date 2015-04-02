@@ -22,13 +22,13 @@ class Validate {
                         $this->length($item, $value, $options);
                         break;
                     
-                    // case 'inclusion':
-                    //     $this->inclusion($item, $value, $options);
-                    //     break;
+                    case 'inclusion':
+                        $this->inclusion($item, $value, $options);
+                        break;
 
-                    // case 'format':
-                    //     $this->format($item, $value, $options);
-                    //     break;
+                    case 'format':
+                        $this->format($item, $value, $options);
+                        break;
 
                     // case 'uniqueness':
                     //     $this->uniqueness($item, $value, $options);
@@ -59,7 +59,7 @@ class Validate {
 
     private function presence($item, $value, $option) {
         if($option === true && empty($value)){
-            $this->addError("{$item} is required!");
+            $this->addError("'{$item}' is required!");
         }
     }
 
@@ -74,17 +74,17 @@ class Validate {
                     $this->lengthIs($item, $value, $param_value);
                     break;
 
-                // case 'min':
-                //     $this->lengthMin($item, $value, $param_value);
-                //     break;
+                case 'minimum':
+                    $this->lengthMin($item, $value, $param_value);
+                    break;
 
-                // case 'max':
-                //     $this->lengthMax($item, $value, $param_value);
-                //     break;
+                case 'maximum':
+                    $this->lengthMax($item, $value, $param_value);
+                    break;
                 
-                // default:
-                //     # code...
-                //     break;
+                default:
+                    # code...
+                    break;
             }
         }
     }
@@ -94,13 +94,37 @@ class Validate {
         $value_length = strlen($value);
 
         if($value_length < $range[0] || $value_length > $range[1] || empty($value)){
-            $this->addError("{$item} length must be in {$range[0]} .. {$range[1]}!");
+            $this->addError("'{$item}' length must be in {$range[0]} .. {$range[1]}!");
         }
     }
 
-    private function lengthIs($item, $value, $param_value) {
-        if($value !== $param_value || empty($value)) {
-            $this->addError("{$item} length must be {$param_value}");
+    private function lengthIs($item, $value, $length) {
+        if(strlen($value) !== $length || empty($value)) {
+            $this->addError("'{$item}' length must be {$length}");
+        }
+    }
+
+    private function lengthMin($item, $value, $length) {
+        if(strlen($value) < $length || empty($value)) {
+            $this->addError("'{$item}' minimum length must be bigger than {$length}");
+        }
+    }
+
+    private function lengthMax($item, $value, $length) {
+        if(strlen($value) > $length || empty($value)) {
+            $this->addError("'{$item}' minimum length must be less than {$length}");
+        }
+    }
+
+    private function inclusion($item, $value, $options) {
+        if(!in_array($value, $options) || empty($value)) {
+            $this->addError("'{$item}' must be in one of: " . implode(', ', $options));
+        }
+    }
+
+    private function format($item, $value, $regexp) {
+        if(!preg_match($regexp, $value)) {
+            $this->addError("'{$item}' not be in right format!");
         }
     }
 
