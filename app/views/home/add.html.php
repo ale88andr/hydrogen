@@ -21,7 +21,11 @@
         if($validates_result->isValid()){
             echo "valid";
         } else {
-            print_r($validates_result->errors());
+            echo '<div class="errors">';
+            foreach ($validates_result->errors() as $error) {
+                echo $error . '</br>';
+            }
+            echo '</div>';
         }
     }
 ?>
