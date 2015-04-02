@@ -62,7 +62,7 @@ class Model
         return count($fields) > 0 ? implode(',', $fields) : '*';
     }
 
-    // return: (bool)result of query, example $user->insert(['login' => $login])
+    // return: (int)inserted rows, example $user->insert(['login' => $login])
     public function insert($hash_values){
         if(count($hash_values)){
             $columns = array_keys($hash_values);
@@ -78,8 +78,37 @@ class Model
             }
 
             $sql = "INSERT INTO {$this->table} (" . implode(', ', $columns) . ") VALUES ({$values})";
-            print_r($sql);
             return $this->send_query($sql, $hash_values, true);
+        } else {
+            $this->_error = 'Call error: insert parameters must be array!';
+        }
+    }
+
+    // return: (int)updated rows, example $user->update($id, ['login' => $login])
+    public function update($constraint, $hash_values){
+        if(count($hash_values)){
+            $where = array_keys($constraint);
+            $values = '';
+            $i = 1;
+
+            foreach ($hash_values as $key => $value) {
+                $values .= $key . '= ?';
+                if($i < count($hash_values)){
+                    $values .= ', ';
+                }
+                $i++;
+            }
+
+            $sql = "UPDATE {$this->table} SET {$values} WHERE ";
+            foreach ($where as $index => $column) {
+                if($index > 0){
+                    $sql .= ' AND ' . $column . ' = ?';
+                } else {
+                    $sql .= $column . ' = ?';
+                }
+            }
+            print_r($sql);
+            return $this->send_query($sql, array_merge($hash_values, $constraint), true);
         } else {
             $this->_error = 'Call error: insert parameters must be array!';
         }

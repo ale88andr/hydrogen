@@ -9,6 +9,7 @@ class Home extends Controller
         // var_dump($result);
         $result = $user->insert(['login' => 'alex']);
         // $result = $user->all(['login', 'created_at']);
+        $result = $user->update(['login' => 'alex'], ['name' => 'ALEX']);
         var_dump($result);
         $this->render('index', ['name' => $user->name]);
     }
