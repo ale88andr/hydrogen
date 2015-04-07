@@ -7,6 +7,10 @@ class App
 
     protected $params = [];
 
+    public $layout = 'layout.html.php';
+
+    public $content;
+
     function __construct(){
         $url = $this->parseURL();
 
@@ -19,7 +23,9 @@ class App
 
             if(method_exists($this->controller, $this->action)){
                 $this->params = $url;
+                ob_start();
                 call_user_func_array([$this->controller, $this->action], $this->params);
+                $this->content = ob_get_clean();
             } else {
                 echo 'Controller "' . get_class($this->controller) . '" does\'t have action "' . $this->action . '"';
             }

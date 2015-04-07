@@ -4,3 +4,5 @@
     require_once ROOT_APP .'init' . EXT;
 
     $app = new App;
+
+    require_once '../app/views/layouts/' . $app->layout;
