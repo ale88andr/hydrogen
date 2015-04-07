@@ -6,3 +6,4 @@
     require_once 'core/Model.php';
     require_once 'core/Input.php';
     require_once 'core/Validate.php';
+    require_once 'core/Route.php';
