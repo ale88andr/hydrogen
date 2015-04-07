@@ -4,6 +4,7 @@
     define('ROOT_APP', ROOT . DS . 'app' . DS);
     define('EXT', '.php');
     define('EXT_VIEW', '.html.php');
+    define('ROOT_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/public/');
 
     define('DEVELOPMENT_ENV', true);
 

@@ -18,4 +18,11 @@ class Home extends Controller
     public function add(){
         $this->render('add');
     }
+
+    public function create($user = []) {
+        $model = $this->model('User');
+        if(!$model->insert($user)) {
+            throw new Exception('There was problem creating user.');
+        }
+    }
 }
