@@ -1,4 +1,4 @@
 <?php
 class Application extends Controller {
-    $this->layout = '';
+    $app->layout = 'public' . EXT_VIEW;
 }

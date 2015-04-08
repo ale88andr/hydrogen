@@ -16,6 +16,7 @@ class Home extends Controller
     }
 
     public function add(){
+        App::setLayout('public');
         $this->render('add');
     }
 

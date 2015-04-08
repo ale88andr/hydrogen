@@ -7,7 +7,7 @@ class App
 
     protected $params = [];
 
-    public $layout = 'layout.html.php';
+    static private $_layout;
 
     public $content;
 
@@ -32,6 +32,18 @@ class App
         } else {
             echo 'Controller "' . $url[0] . '" not found. Searched in: "' . ROOT_APP . 'controllers' . DS . '"';
         }
+
+        if(empty(self::$_layout)) {
+            self::setLayout();
+        }
+    }
+
+    public static function setLayout($layout = false) {
+        self::$_layout = ($layout) ? $layout : 'application';
+    }
+
+    public static function getLayout() {
+        return self::$_layout;
     }
 
     function parseURL(){

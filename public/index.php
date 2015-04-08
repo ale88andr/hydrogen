@@ -5,4 +5,4 @@
 
     $app = new App;
 
-    require_once '../app/views/layouts/' . $app->layout;
+    require_once '../app/views/layouts/' . App::getLayout() . EXT_VIEW;
