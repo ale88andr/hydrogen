@@ -1,4 +1,4 @@
 <?php
-    Route::to('add1:main');
+    Route::to('add:main');
 ?>
 Hello <i><?=$name?></i>
