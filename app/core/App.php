@@ -42,8 +42,20 @@ class App
         self::$_layout = ($layout) ? $layout : 'application';
     }
 
-    public static function getLayout() {
+    private function getLayout() {
         return self::$_layout;
+    }
+
+    public function layout() {
+        $layout_dir = ROOT_APP . 'views' . DS . 'layouts' . DS;
+        $layout_file = self::getLayout() . EXT_VIEW;
+        $layout =  $layout_dir . $layout_file; 
+        if(file_exists($layout)) {
+            return $layout;
+        }
+        else {
+            throw new Exception("Layout {$layout_file} not found. Searched in {$layout_dir}"); 
+        }
     }
 
     function parseURL(){

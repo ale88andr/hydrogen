@@ -5,4 +5,5 @@
 
     $app = new App;
 
-    require_once '../app/views/layouts/' . App::getLayout() . EXT_VIEW;
+    try { require_once $app->layout(); } 
+    catch(Exception $e) { die($e->getMessage()); }
