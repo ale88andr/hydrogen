@@ -1,5 +1,7 @@
 <?php
-class Input {
+class Input
+
+{
     /**
      * Checks that user form is submitted.
      * Example: if(Input::isSubmit()) { # code here... }
@@ -7,19 +9,20 @@ class Input {
      * @param string $method   Form send method
      * @return bool
      */
-    public static function isSubmit($method = 'post'){
+    public static function isSubmit($method = 'post')
+    {
         switch ($method) {
-            case 'post':
-                return (!empty($_POST)) ? true : false;
-                break;
-            
-            case 'get':
-                return (!empty($_GET)) ? true : false;
-                break;
+        case 'post':
+            return (!empty($_POST)) ? true : false;
+            break;
 
-            default:
-                return false;
-                break;
+        case 'get':
+            return (!empty($_GET)) ? true : false;
+            break;
+
+        default:
+            return false;
+            break;
         }
     }
 
@@ -30,12 +33,15 @@ class Input {
      * @param string $item   Item from GET/POST array
      * @return mixed
      */
-    public static function find($item){
-        if(isset($_POST[$item])){
+    public static function find($item)
+    {
+        if (isset($_POST[$item])) {
             return $_POST[$item];
-        } elseif (isset($_GET[$item])) {
+        }
+        elseif (isset($_GET[$item])) {
             return $_GET[$item];
         }
+
         return '';
     }
 }

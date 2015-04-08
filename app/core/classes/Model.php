@@ -1,6 +1,6 @@
 <?php
-
 class Model
+
 {
     /**
      * Database connection (Singletone)
@@ -16,7 +16,8 @@ class Model
      */
     protected $table;
 
-    function __construct(){
+    function __construct()
+    {
         $this->db = Database::connect();
         $this->table = mb_strtolower(get_class($this)) . 's';
     }
@@ -29,11 +30,13 @@ class Model
      * @param boolean $write    Type of query (READ or WRITE)
      * @return mixed OR int
      */
-    private function send_query($sql, $values = [], $write = false) {
+    private function send_query($sql, $values = [], $write = false)
+    {
         $this->db->query($sql, $values, $write);
-        if($write){
+        if ($write) {
             return $this->db->row_count();
-        } else {
+        }
+        else {
             return $this->db->results();
         }
     }
@@ -45,7 +48,8 @@ class Model
      * @param array $select  Columns for select(default:false[all table columns])
      * @return mixed
      */
-    public function all($select = false){
+    public function all($select = false)
+    {
         $sql = 'SELECT ' . $this->set_fields($select) . ' FROM ' . $this->table;
         return $this->send_query($sql);
     }
@@ -58,22 +62,27 @@ class Model
      * @param array $select         Columns for select(default:false[all table columns])
      * @return mixed
      */
-    public function find($constraint, $select = false){
-        if(is_array($constraint)){
+    public function find($constraint, $select = false)
+    {
+        if (is_array($constraint)) {
             $columns = array_keys($constraint);
             $values = array_values($constraint);
             $sql = 'SELECT ' . $this->set_fields($select) . ' FROM ' . $this->table . ' WHERE ';
-            foreach ($columns as $index => $column) {
-                if($index > 0){
-                    $sql .= ' AND ' . $column . ' = ?';
-                } else {
-                    $sql .= $column . ' = ?';
+            foreach($columns as $index => $column) {
+                if ($index > 0) {
+                    $sql.= ' AND ' . $column . ' = ?';
+                }
+                else {
+                    $sql.= $column . ' = ?';
                 }
             }
+
             return $this->send_query($sql, $values);
-        } elseif(is_integer($constraint)) {
+        }
+        elseif (is_integer($constraint)) {
             return $this->find_by_id($constraint, $select);
-        } else {
+        }
+        else {
             $this->_error = 'Undefined constraint ' . $constraint . ' for find';
         }
     }
@@ -86,23 +95,26 @@ class Model
      * @param array $select     Columns for select(default:false[all table columns])
      * @return mixed
      */
-    public function find_by_id($id, $select = false) {
-        if(is_integer($id)){
+    public function find_by_id($id, $select = false)
+    {
+        if (is_integer($id)) {
             $sql = 'SELECT ' . $this->set_fields($select) . ' FROM ' . $this->table . ' WHERE id = ?';
             return $this->send_query($sql, [$id]);
-        } else {
-            $this->_error = 'Can\'t find row by id = "' . $id . '" in ' . $this->table . 'table!';
+        }
+        else {
+            $this->_error = "Can't find row by id = '{$id}' in '{$this->table}' table.";
         }
     }
 
     /**
-     * Return part of query with list of columns or '*'(all)
+     * Return part of query with list of columns or ' * '(all)
      *
      * @param array $select     Columns for select
      * @return string
      */
-    private function set_fields($fields){
-        return count($fields) > 0 ? implode(',', $fields) : '*';
+    private function set_fields($fields)
+    {
+        return count($fields) > 0 ? implode(', ', $fields) : ' * ';
     }
 
     /**
@@ -112,24 +124,25 @@ class Model
      * @param array $hash_values  Inserted values [column => value, ...]
      * @return int
      */
-    public function insert($hash_values){
+    public function insert($hash_values)
+    {
         if(count($hash_values)){
             $columns = array_keys($hash_values);
             $values = '';
-            
             $i = 1;
             foreach ($hash_values as $key => $value) {
                 $values .= ":{$key}";
                 if($i < count($hash_values)){
                     $values .= ', ';
                 }
+
                 $i++;
             }
 
             $sql = "INSERT INTO {$this->table} (" . implode(', ', $columns) . ") VALUES ({$values})";
             return $this->send_query($sql, $hash_values, true);
         } else {
-            $this->_error = 'Call error: insert parameters must be array!';
+            $this->_error = 'Callerror: insert parameters must be array !';
         }
     }
 
@@ -141,17 +154,18 @@ class Model
      * @param array $hash_values  Inserted values [column => value, ...]
      * @return int
      */
-    public function update($constraint, $hash_values){
+    public function update($constraint, $hash_values)
+    {
         if(count($hash_values)){
             $where = array_keys($constraint);
             $values = '';
-            
             $i = 1;
             foreach ($hash_values as $key => $value) {
                 $values .= "{$key} = :{$key}";
                 if($i < count($hash_values)){
                     $values .= ', ';
                 }
+
                 $i++;
             }
 
@@ -163,10 +177,11 @@ class Model
                     $sql .= "{$column} = :{$column}";
                 }
             }
+
             print_r($sql);
             return $this->send_query($sql, array_merge($hash_values, $constraint), true);
         } else {
-            $this->_error = 'Call error: insert parameters must be array!';
+            $this->_error = 'Callerror: insert parameters must be array !';
         }
     }
 }
