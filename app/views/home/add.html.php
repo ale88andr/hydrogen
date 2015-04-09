@@ -49,36 +49,42 @@
 
 <form action="?" method="post">
     <?= Html::tag('h1', 'H1 content', ['class' => 'h1_html'])?>
-    <?= Link::to("home", 'Home', ['class' => 'h1_html'])?>
+    <?= Link::to('home', 'Home page', ['class' => 'h1_html'])?>
     <div class="field">
         <!-- <label for="login">Username</label> -->
-        <?= Form::label('login', 'Username') ?>
+        <?= Form::label('user.login', 'Username') ?>
         <?= Form::text('user.login', [
                                     'value' => Input::find('user.login'),
-                                    'autocomplete' => 'off'
+                                    'autocomplete' => 'off',
                                 ]);?>
         <!-- <input type="text" name="login" class="login" id="login" value="<?= Input::find('login'); ?>" autocomplete="off"> -->
     </div>
 
     <div class="field">
-        <?= Form::label('email', 'Email') ?>
+        <?= Form::label('user.email', 'Email') ?>
         <?= Form::email('user.email', ['value' => Input::find('user.email')]);?>
         <!-- <input type="email" name="email" class="email" id="email" value="<?= Input::find('email'); ?>" autocomplete="off"> -->
     </div>
 
     <div class="field">
-        <?= Form::label('password', 'Type your password') ?>
+        <?= Form::label('user.password', 'Type your password') ?>
         <?= Form::password('user.password');?>
         <!-- <label for="password">Type your password</label>
         <input type="password" name="password" class="password" id="password"> -->
     </div>
 
     <div class="field">
-        <?= Form::label('password_confirmation', 'Retype your password') ?>
+        <?= Form::label('user.password_confirmation', 'Retype your password') ?>
         <?= Form::password('user.password_confirmation');?>
         <!-- <label for="password_confirmation">Retype your password</label>
         <input type="password" name="password_confirmation" class="password" id="password_confirmation"> -->
     </div>
 
-    <input type="submit" value="Register">
+    <div class="field">
+        <?= Form::label('user.age', 'Type your age: ') ?>
+        <?= Form::numeric('user.age', 5, 100, 1);?>
+    </div>
+
+    <?= Form::submit('Register') ?>
+    <!-- <input type="submit" value="Register"> -->
 </form>

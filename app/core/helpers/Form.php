@@ -7,7 +7,7 @@ class Form extends Html
 {
     public static function text($name, $options = [])
     {
-        $name = static::responceName($name);
+        $name = static::responseName($name);
         return static::tag('input', false, array_merge(['type' => 'text',
                                                         'name' => $name['script'],
                                                         'id' => $name['html'],
@@ -17,12 +17,15 @@ class Form extends Html
 
     public static function label($for, $content, $options = [])
     {
+        if(strpos($for, '.')){
+            $for = str_replace('.', '_', $for);
+        }
         return static::tag('label', $content, array_merge(['for' => $for], $options));
     }
 
     public static function password($name, $options = [])
     {
-        $name = static::responceName($name);
+        $name = static::responseName($name);
         return static::tag('input', false, array_merge(['type' => 'password',
                                                         'name' => $name['script'],
                                                         'id' => $name['html'],
@@ -32,7 +35,7 @@ class Form extends Html
 
     public static function email($name, $options = [])
     {
-        $name = static::responceName($name);
+        $name = static::responseName($name);
         return static::tag('input', false, array_merge(['type' => 'email',
                                                         'name' => $name['script'],
                                                         'id' => $name['html'],
@@ -40,17 +43,25 @@ class Form extends Html
                                                         ], $options));
     }
 
-    public static function numeric($name, $options = [])
+    public static function numeric($name, $min, $max, $step, $options = [])
     {
-        return static::tag('input', false, array_merge(['type' => 'number', 'name' => $name], $options));
+        $name = static::responseName($name);
+        return static::tag('input', false, array_merge(['type' => 'number',
+                                                        'name' => $name['script'],
+                                                        'min' => $min,
+                                                        'max' => $max,
+                                                        'step' => $step,
+                                                        'id' => $name['html'],
+                                                        'class' => $name['html']
+                                                        ], $options));
     }
 
     public static function submit($value, $options = [])
     {
-        return static::tag('input', false, array_merge(['type' => 'submit'], $options));
+        return static::tag('input', false, array_merge(['type' => 'submit', 'value' => $value], $options));
     }
 
-    protected static function responceName($name)
+    protected static function responseName($name)
     {
         $name = trim($name);
         if(strpos($name, '.')) {
