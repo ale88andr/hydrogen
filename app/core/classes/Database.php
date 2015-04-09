@@ -97,7 +97,8 @@ class Database
             catch(PDOException $e) {
                 echo "We have a problem with this request...";
                 $this->_error = true;
-                DEVELOPMENT_ENV ? print_r($e->getMessage()) : file_put_contents('error.log', $e->getMessage() , FILE_APPEND);
+                DEVELOPMENT_ENV ? print_r($e->getMessage())
+                                : file_put_contents('error.log', $e->getMessage() , FILE_APPEND);
             }
         }
 

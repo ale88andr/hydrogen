@@ -35,6 +35,16 @@ class Input
      */
     public static function find($item)
     {
+        if(strpos($item, '.')) {
+            $item = explode('.', $item);
+            $search_item = $_POST;
+            foreach ($item as $value) {
+                $search_item = $search_item[$value];
+            }
+
+            return $search_item;
+        }
+
         if (isset($_POST[$item])) {
             return $_POST[$item];
         }

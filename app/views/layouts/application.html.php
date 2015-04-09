@@ -8,6 +8,8 @@
   </head>
   <body>
     <!-- page content -->
-    <?= $app->content ?>
+    <section id='content'>
+      <?= $app->content ?>
+    </section>
   </body>
 </html>
