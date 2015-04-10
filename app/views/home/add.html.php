@@ -85,6 +85,28 @@
         <?= Form::numeric('user.age', 5, 100, 1);?>
     </div>
 
+    <div class="field">
+        <?= Form::label('user.country', 'Choose your country: ') ?>
+        <?= Form::select('user.country', ['Russia', 'Ukraine', 'China']);?>
+    </div>
+
+    <div class="field">
+        <?= Form::label('user.sex', 'Choose your country: ') ?>
+        <?= Form::check_box('user.sex', ['male' => 'Man', 'female' => 'Women'], 'male', [], true);?>
+    </div>
+
+    <div class="field">
+        <?= Form::label('user.sex', 'Choose your sex: ') ?>
+        <?= Form::radio('user.sex', ['male' => 'Man', 'female' => 'Women'], 'male');?>
+    </div>
+
+    <div class="field">
+        <?= Form::label('user.born', 'Select your bithday: ') ?>
+        <?= Form::date('user.born', '1940-01-01');?>
+    </div>
+
+    <?= Form::hidden('user.surname', Input::find('user.login')) ?>
+
     <?= Form::submit('Register') ?>
     <!-- <input type="submit" value="Register"> -->
 </form>

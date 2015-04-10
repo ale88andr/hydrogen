@@ -61,6 +61,90 @@ class Form extends Html
         return static::tag('input', false, array_merge(['type' => 'submit', 'value' => $value], $options));
     }
 
+    public static function select($name, $values = [], $options = [])
+    {
+        $name = static::responseName($name);
+        $content = '';
+        foreach ($values as $value) {
+            $content .= '<option value=' . strtolower($value) . '>' . $value . '</option>';
+        }
+
+        return static::tag('select', $content, array_merge(['name' => $name['script'],
+                                                            'id' => $name['html'],
+                                                            'class' => $name['html']
+                                                            ], $options));
+    }
+
+    public static function check_box($name, $checkboxes, $checked = false, $options = [], $inline = false)
+    {
+        $name = static::responseName($name);
+        $html = '<div style={display: block}>';
+        foreach ($checkboxes as $key => $value) {
+            $checked_flag = [];
+            if($checked !== false && $key == $checked){
+                $checked_flag = ['checked' => true];
+            }
+            $html .= static::tag('input', false, array_merge([ 'type' => 'checkbox',
+                                                                'name' => $name['script'],
+                                                                'id' => $name['html'] . '_' . $key,
+                                                                'class' => $name['html']
+                                                                ], $options, $checked_flag));
+            $html .= $value;
+
+            if($inline === false) {
+                $html .= static::tag('br');
+            }
+        }
+
+        return $html . '</div>';
+    }
+
+    public static function radio($name, $buttons, $checked = false, $options = [], $inline = false)
+    {
+        $name = static::responseName($name);
+        $html = '<div style={display: block}>';
+        foreach ($buttons as $key => $value) {
+            $checked_flag = [];
+            if($checked !== false && $key == $checked){
+                $checked_flag = ['checked' => true];
+            }
+            $html .= static::tag('input', false, array_merge([  'type' => 'radio',
+                                                                'name' => $name['script'],
+                                                                'id' => $name['html'] . '_' . $key,
+                                                                'class' => $name['html']
+                                                                ], $options, $checked_flag));
+            $html .= $value;
+
+            if($inline === false) {
+                $html .= static::tag('br');
+            }
+        }
+
+        return $html . '</div>';
+    }
+
+    public static function hidden($name, $value)
+    {
+        $name = static::responseName($name);
+        return static::tag('input', false, ['type' => 'hidden', 'value' => $value]);
+    }
+
+    public static function date($name, $default = false, $options = [])
+    {
+        $name = static::responseName($name);
+        $post_options = [];
+        if($default !== false){
+            $post_options['value'] = $default;
+        }
+
+        return static::tag('input', false, array_merge([
+                                                        'type' => 'date',
+                                                        'name' => $name['script'],
+                                                        'id' => $name['html'],
+                                                        'class' => $name['html']
+                                                        ], $options, $post_options));
+    }
+
     protected static function responseName($name)
     {
         $name = trim($name);

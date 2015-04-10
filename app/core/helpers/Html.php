@@ -9,7 +9,7 @@ class Html
         'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'
         ];
 
-    public static function tag($tag, $content, $options = [])
+    public static function tag($tag, $content = false, $options = [])
     {
         $html = "<{$tag} " . static::optionsHandler($options) . '>';
         if(array_search($tag, static::$voidTags)) {
