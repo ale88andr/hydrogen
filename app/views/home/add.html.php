@@ -105,7 +105,15 @@
         <?= Form::date('user.born', '1940-01-01');?>
     </div>
 
+    <div class="date">
+        <?= Date::current(true, '-') ?>
+        <?= Date::now() ?>
+        <?= Date::year() ?>
+        <?= Date::diff('01.01.2015', '01.01.2016') ?>
+    </div>
+
     <?= Form::hidden('user.surname', Input::find('user.login')) ?>
+    <?= String::capitalize(Input::find('user.login')) ?>
 
     <?= Form::submit('Register') ?>
     <!-- <input type="submit" value="Register"> -->

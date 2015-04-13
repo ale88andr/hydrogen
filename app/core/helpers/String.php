@@ -51,6 +51,11 @@ class String
         return $subject;
     }
 
+    public static function lower($subject)
+    {
+        return strtolower($subject);
+    }
+
     public static function isBlank($subject)
     {
         return (empty($subject)) ? true : false;

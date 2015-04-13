@@ -8,4 +8,6 @@ define('ROOT_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/public/');
 define('DEVELOPMENT_ENV', true);
 require_once ROOT . DS . 'config' . DS . 'initializer' . EXT;
 
+date_default_timezone_set('Europe/Moscow');
+
 before_load();
