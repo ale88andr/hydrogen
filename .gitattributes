@@ -1,0 +1,20 @@
+# Autodetect text files
+* text=auto
+
+# Text files
+*.php  text
+*.css  text
+*.js   text
+*.txt  text
+*.md   text
+*.xml  text
+*.json text
+*.bat  text
+*.sql  text
+*.xml  text
+*.yml  text
+
+*.png  binary
+*.jpg  binary
+*.gif  binary
+*.ttf  binary
