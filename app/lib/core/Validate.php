@@ -1,4 +1,9 @@
 <?php
+
+namespace core;
+
+use core\Database;
+
 /**
  * Validate is a class which checks values by rules
  * Validate form, input values,

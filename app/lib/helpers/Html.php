@@ -1,6 +1,6 @@
 <?php
 
-// namespace hydrogen\helpers;
+namespace helpers;
 
 class Html
 {

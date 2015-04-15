@@ -1,4 +1,7 @@
 <?php
+
+namespace core;
+
 class Input
 
 {
@@ -39,7 +42,9 @@ class Input
             $item = explode('.', $item);
             $search_item = $_POST;
             foreach ($item as $value) {
-                $search_item = $search_item[$value];
+                if(array_key_exists($value, $search_item)){
+                    $search_item = $search_item[$value];
+                }
             }
 
             return $search_item;

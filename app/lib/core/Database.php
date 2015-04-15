@@ -1,4 +1,10 @@
 <?php
+
+namespace core;
+
+use core\Config;
+use \PDO;
+
 class Database
 
 {

@@ -1,5 +1,7 @@
 <?php
 
+namespace helpers;
+
 /**
 * Alias of String
 */

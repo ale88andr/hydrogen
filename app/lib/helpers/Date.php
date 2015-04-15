@@ -1,4 +1,9 @@
 <?php
+
+namespace helpers;
+
+use \DateTime;
+
 class Date
 {
     public static function now($leadZero = false, $separator = '/')
