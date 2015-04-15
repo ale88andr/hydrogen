@@ -1,6 +1,8 @@
 <?php
-class App
 
+namespace core;
+
+class App
 {
     protected $controller, $action, $params = [];
 

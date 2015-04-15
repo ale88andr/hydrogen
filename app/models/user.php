@@ -1,5 +1,9 @@
 <?php
-class User extends Model{
+
+use core\Model;
+
+class User extends Model
+{
     public $name;
 
     public function __construct(){

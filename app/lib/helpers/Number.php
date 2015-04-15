@@ -1,5 +1,7 @@
 <?php
 
+namespace helpers;
+
 /**
 * Number helper
 */

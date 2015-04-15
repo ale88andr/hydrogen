@@ -1,4 +1,13 @@
 <?php
+
+use core\Input;
+use core\Validate;
+use helpers\Html;
+use helpers\Link;
+use helpers\Form;
+use helpers\Date;
+use helpers\String;
+
     Input::find('user.login');
     if(Input::isSubmit()){
         // echo Input::find('username');
